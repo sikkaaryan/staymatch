@@ -1,0 +1,553 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#10110f">
+  <meta name="description" content="Free hybrid Airbnb discovery with strict verification.">
+  <title>StayMatch — Free Discovery</title>
+
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg: #10110f;
+      --panel: #191b18;
+      --line: #30332d;
+      --text: #f4f3ed;
+      --muted: #a5a99d;
+      --accent: #d7f36a;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      background: radial-gradient(ellipse at 90% 0%, #343d1b, transparent 38%), var(--bg);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      min-height: 100vh;
+    }
+
+    .shell {
+      width: min(100% - 28px, 720px);
+      margin: auto;
+      padding: 24px 0 45px;
+    }
+
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 38px;
+    }
+
+    .brand {
+      font-size: 25px;
+      font-weight: 850;
+      letter-spacing: -1px;
+    }
+
+    .brand span, h1 span { color: var(--accent); }
+
+    .pill {
+      border: 1px solid var(--line);
+      border-radius: 99px;
+      padding: 8px 10px;
+      color: var(--muted);
+      font-size: 10px;
+    }
+
+    .eyebrow {
+      color: var(--accent);
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      font-size: 11px;
+      font-weight: 800;
+    }
+
+    h1 {
+      font-size: clamp(42px, 10vw, 65px);
+      letter-spacing: -3px;
+      line-height: 1;
+      margin: 16px 0;
+    }
+
+    h2 { font-size: 19px; margin: 0 0 8px; }
+
+    .intro, .muted {
+      color: var(--muted);
+      line-height: 1.65;
+      font-size: 13px;
+    }
+
+    .intro { font-size: 14px; margin-bottom: 26px; }
+
+    .panel {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      padding: 19px;
+      margin-bottom: 16px;
+    }
+
+    .field { margin-bottom: 15px; }
+
+    label, legend {
+      display: block;
+      font-size: 13px;
+      font-weight: 650;
+      margin-bottom: 8px;
+    }
+
+    input, select, button {
+      font: inherit;
+    }
+
+    input, select {
+      width: 100%;
+      min-height: 47px;
+      padding: 11px;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      background: #111310;
+      color: var(--text);
+    }
+
+    .two, .checks {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    fieldset {
+      border: 0;
+      padding: 0;
+      margin: 0 0 18px;
+    }
+
+    .check {
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+      padding: 11px 9px;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      background: #111310;
+      line-height: 1.4;
+    }
+
+    .check input {
+      width: 17px;
+      min-height: 17px;
+      margin: 1px 0 0;
+      accent-color: var(--accent);
+      flex-shrink: 0;
+    }
+
+    .check span { font-size: 12px; }
+
+    button, .button-link {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 100%;
+      min-height: 49px;
+      padding: 12px;
+      border: 0;
+      border-radius: 11px;
+      background: var(--accent);
+      color: #171a10;
+      font-weight: 800;
+      text-decoration: none;
+      cursor: pointer;
+    }
+
+    .secondary {
+      background: #111310;
+      color: var(--text);
+      border: 1px solid var(--line);
+    }
+
+    .link-card, .candidate {
+      padding: 14px 0;
+      border-top: 1px solid var(--line);
+      overflow-wrap: anywhere;
+    }
+
+    .link-card a, .candidate a {
+      color: var(--accent);
+      font-weight: 750;
+    }
+
+    .link-card p {
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.5;
+    }
+
+    .status {
+      display: inline-block;
+      width: fit-content;
+      max-width: 100%;
+      padding: 5px 8px;
+      margin: 8px 0;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      color: var(--muted);
+      font-size: 10px;
+      letter-spacing: .3px;
+    }
+
+    .notice {
+      border: 1px solid var(--line);
+      background: #111310;
+      border-radius: 12px;
+      padding: 14px;
+      font-size: 13px;
+      line-height: 1.65;
+    }
+
+    .fine {
+      color: var(--muted);
+      font-size: 11px;
+      line-height: 1.6;
+      text-align: center;
+    }
+
+    footer {
+      padding-top: 20px;
+      text-align: center;
+      color: #777c70;
+      font-size: 11px;
+    }
+
+    @media (max-width: 420px) {
+      .checks { grid-template-columns: 1fr; }
+      .panel { padding: 15px; }
+      h1 { letter-spacing: -2px; }
+    }
+  </style>
+</head>
+
+<body>
+<main class="shell">
+
+  <header>
+    <div class="brand">stay<span>match</span>.</div>
+    <div class="pill">AIRBNB ONLY · FREE MODE</div>
+  </header>
+
+  <section>
+    <div class="eyebrow">Less scrolling. Better stays.</div>
+    <h1>Find a stay<br>that fits <span>you.</span></h1>
+    <p class="intro">
+      Generate targeted web searches, collect Airbnb listing links,
+      and keep every unverified detail clearly marked. No search API key
+      and no automated access to Airbnb pages.
+    </p>
+  </section>
+
+  <section class="panel">
+    <h2>Build your search</h2>
+    <p class="muted">
+      Set your trip details and generate focused public web searches.
+      Search results are candidates, not confirmed matches.
+    </p>
+
+    <form id="search-form">
+      <div class="field">
+        <label for="location">Destination</label>
+        <input id="location" value="Gurgaon, Delhi NCR"
+          maxlength="120" required>
+      </div>
+
+      <div class="two">
+        <div class="field">
+          <label for="checkin">Check-in</label>
+          <input id="checkin" type="date"
+            value="2026-10-27" required>
+        </div>
+        <div class="field">
+          <label for="checkout">Check-out</label>
+          <input id="checkout" type="date"
+            value="2026-10-28" required>
+        </div>
+      </div>
+
+      <div class="two">
+        <div class="field">
+          <label for="guests">Guests</label>
+          <select id="guests">
+            <option value="1">1 guest</option>
+            <option value="2" selected>2 guests</option>
+            <option value="3">3 guests</option>
+            <option value="4">4 guests</option>
+            <option value="5">5 guests</option>
+            <option value="6">6 guests</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="budget">Maximum total budget (₹)</label>
+          <input id="budget" type="number"
+            min="1" value="5700" required>
+        </div>
+      </div>
+
+      <fieldset>
+        <legend>Mandatory requirements</legend>
+        <div class="checks">
+          <label class="check">
+            <input type="checkbox" value="PS5 or PS4">
+            <span>🎮 PS5 or PS4</span>
+          </label>
+          <label class="check">
+            <input type="checkbox" value="Private jacuzzi" checked>
+            <span>🛁 Private jacuzzi</span>
+          </label>
+          <label class="check">
+            <input type="checkbox" value="Private pool">
+            <span>🏊 Private pool</span>
+          </label>
+          <label class="check">
+            <input type="checkbox" value="Entire place" checked>
+            <span>🔑 Entire place</span>
+          </label>
+          <label class="check">
+            <input type="checkbox" value="Kitchen" checked>
+            <span>🍳 Kitchen</span>
+          </label>
+          <label class="check">
+            <input type="checkbox" value="Free parking">
+            <span>🚗 Free parking</span>
+          </label>
+        </div>
+      </fieldset>
+
+      <button type="submit">Generate web searches ↗</button>
+    </form>
+
+    <div id="searches" hidden aria-live="polite"></div>
+  </section>
+
+  <section class="panel">
+    <h2>Candidate collector</h2>
+    <p class="muted">
+      Open a search result, copy an Airbnb listing URL, and paste it here.
+      Only secure Airbnb room URLs are accepted.
+    </p>
+
+    <form id="candidate-form">
+      <div class="field">
+        <label for="listing-url">Airbnb listing URL</label>
+        <input id="listing-url" type="url"
+          placeholder="https://www.airbnb.co.in/rooms/12345678"
+          required>
+      </div>
+      <button class="secondary" type="submit">Add candidate</button>
+    </form>
+
+    <div id="candidates" aria-live="polite"></div>
+    <p class="fine">
+      Candidates are held in this page session only. Reloading the page
+      clears them. No booking is made by StayMatch.
+    </p>
+  </section>
+
+  <div class="notice">
+    <strong>Strict verification rule</strong><br>
+    Unknown means unknown. Search snippets and pasted links cannot confirm
+    a private jacuzzi, kitchen, entire-place status, total price including
+    fees, or availability for your dates. No candidate is labelled a
+    confirmed match in this free discovery mode. Verify every requirement
+    on Airbnb before booking.
+  </div>
+
+  <footer>StayMatch · Independent discovery tool · No API key required</footer>
+</main>
+
+<script>
+  const form = document.getElementById("search-form");
+  const searchOutput = document.getElementById("searches");
+  const candidateForm = document.getElementById("candidate-form");
+  const candidateInput = document.getElementById("listing-url");
+  const candidateOutput = document.getElementById("candidates");
+
+  const checkin = document.getElementById("checkin");
+  const checkout = document.getElementById("checkout");
+  const today = new Date();
+  const localDate = new Date(
+    today.getTime() - today.getTimezoneOffset() * 60000
+  ).toISOString().slice(0, 10);
+
+  checkin.min = localDate;
+  checkout.min = localDate;
+
+  checkin.addEventListener("change", () => {
+    checkout.min = checkin.value || localDate;
+
+    if (checkout.value && checkout.value <= checkin.value) {
+      checkout.value = "";
+    }
+  });
+
+  const candidates = new Map();
+
+  function isAirbnbRoomUrl(rawUrl) {
+    try {
+      const url = new URL(rawUrl);
+      const validHosts = [
+        "airbnb.com",
+        "www.airbnb.com",
+        "airbnb.co.in",
+        "www.airbnb.co.in"
+      ];
+
+      return url.protocol === "https:" &&
+        validHosts.includes(url.hostname.toLowerCase()) &&
+        /^\/rooms\/\d+\/?$/.test(url.pathname);
+    } catch {
+      return false;
+    }
+  }
+
+  function renderCandidates() {
+    candidateOutput.replaceChildren();
+
+    if (candidates.size === 0) {
+      const empty = document.createElement("p");
+      empty.className = "muted";
+      empty.textContent = "No candidates added yet.";
+      candidateOutput.appendChild(empty);
+      return;
+    }
+
+    for (const url of candidates.keys()) {
+      const card = document.createElement("article");
+      card.className = "candidate";
+
+      const link = document.createElement("a");
+      link.href = url;
+      link.target = "_blank";
+      link.rel = "noopener noreferrer";
+      link.textContent = url;
+
+      const status = document.createElement("div");
+      status.className = "status";
+      status.textContent =
+        "UNVERIFIED · Price and availability unknown";
+
+      const remove = document.createElement("button");
+      remove.type = "button";
+      remove.className = "secondary";
+      remove.textContent = "Remove candidate";
+      remove.addEventListener("click", () => {
+        candidates.delete(url);
+        renderCandidates();
+      });
+
+      card.append(link, status, remove);
+      candidateOutput.appendChild(card);
+    }
+  }
+
+  form.addEventListener("submit", (event) => {
+    event.preventDefault();
+
+    if (checkout.value <= checkin.value) {
+      alert("Check-out must be after check-in.");
+      return;
+    }
+
+    const location =
+      document.getElementById("location").value.trim();
+    const checkIn = checkin.value;
+    const checkOut = checkout.value;
+    const guests = document.getElementById("guests").value;
+    const budget = Number(
+      document.getElementById("budget").value
+    );
+
+    if (!location || !Number.isFinite(budget) || budget <= 0) {
+      alert("Enter a valid destination and budget.");
+      return;
+    }
+
+    const requirements = [
+      ...form.querySelectorAll('input[type="checkbox"]:checked')
+    ].map((input) => input.value);
+
+    const queries = [
+      `site:airbnb.co.in/rooms "${location}" "${checkIn}" "${checkOut}" "${guests} guests" ${requirements.join(" ")}`,
+      `site:airbnb.com/rooms "${location}" ${requirements.join(" ")}`,
+      `Airbnb "${location}" ${requirements.join(" ")}`,
+      `Airbnb "${location}" private jacuzzi entire place kitchen`
+    ];
+
+    searchOutput.replaceChildren();
+    searchOutput.hidden = false;
+
+    const summary = document.createElement("p");
+    summary.className = "muted";
+    summary.textContent =
+      `Dates: ${checkIn} to ${checkOut} · ${guests} guest(s) · ` +
+      `Maximum total budget: ₹${budget.toLocaleString("en-IN")}. ` +
+      "Search engines may not enforce dates, price, or amenity terms.";
+    searchOutput.appendChild(summary);
+
+    queries.forEach((query, index) => {
+      const card = document.createElement("div");
+      card.className = "link-card";
+
+      const link = document.createElement("a");
+      link.href =
+        "https://www.google.com/search?q=" +
+        encodeURIComponent(query);
+      link.target = "_blank";
+      link.rel = "noopener noreferrer";
+      link.textContent = [
+        "Search 1 · All mandatory requirements",
+        "Search 2 · Broader Airbnb listings",
+        "Search 3 · General amenity search",
+        "Search 4 · Jacuzzi-focused search"
+      ][index];
+
+      const detail = document.createElement("p");
+      detail.textContent = query;
+
+      card.append(link, detail);
+      searchOutput.appendChild(card);
+    });
+  });
+
+  candidateForm.addEventListener("submit", (event) => {
+    event.preventDefault();
+
+    const rawUrl = candidateInput.value.trim();
+
+    if (!isAirbnbRoomUrl(rawUrl)) {
+      alert(
+        "Enter a secure Airbnb listing URL containing a /rooms/ listing ID."
+      );
+      return;
+    }
+
+    const url = new URL(rawUrl);
+    url.search = "";
+    url.hash = "";
+
+    candidates.set(url.toString(), {
+      status: "unknown",
+      availability: "unknown",
+      totalPrice: null
+    });
+
+    candidateInput.value = "";
+    renderCandidates();
+  });
+
+  renderCandidates();
+</script>
+</body>
+</html>
